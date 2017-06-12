@@ -1,0 +1,12 @@
+---
+version: '2'
+
+services:
+  monit:
+    build: .
+    image: monit
+    restart: always
+    volumes:
+      - ./config/monitrc:/tmp/monitrc:ro,Z
+    ports:
+      - 8080:8080
