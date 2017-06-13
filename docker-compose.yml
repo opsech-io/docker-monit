@@ -7,6 +7,6 @@ services:
     image: monit
     restart: always
     volumes:
-      - ./config/monitrc:/tmp/monitrc:ro,Z
+      - ./config:/tmp/config:ro,z
     ports:
       - 8080:8080
