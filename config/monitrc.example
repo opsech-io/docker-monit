@@ -12,7 +12,9 @@ set mailserver
 	password ""
 	using ssl
 
+# not on { instance } because it will email you every time you restart the container
 set alert admin@example.com but not on { instance }
+set alert your-10d-number@sms-gateway.com but not on { instance }
 
 check host node.example.com address node.example.com
 	if failed ping4 then alert
