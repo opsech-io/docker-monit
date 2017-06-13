@@ -2,55 +2,56 @@
 
 set daemon 5
 set httpd
-	port 8080
-	allow guest:guest readonly
+    port 8080
+#   allow guest:guest readonly
+    allow md5 /etc/htpasswd
 
 set mail-format { from: monit@example.com }
 set mailserver
-	mail.example.com
-	username ""
-	password ""
-	using ssl
+    mail.example.com
+    username ""
+    password ""
+    using ssl
 
 # not on { instance } because it will email you every time you restart the container
 set alert admin@example.com but not on { instance }
 set alert your-10d-number@sms-gateway.com but not on { instance }
 
 check host node.example.com address node.example.com
-	if failed ping4 then alert
+    if failed ping4 then alert
 
 check host mail.example.com address mail.example.com
-	if failed port 25 protocol smtp then alert
-	if failed port 143 protocol imap then alert
-	if failed
-		port 443
-		and certificate valid > 10 days
-		protocol https
-	for 3 cycles
-	then alert
+    if failed port 25 protocol smtp then alert
+    if failed port 143 protocol imap then alert
+    if failed
+        port 443
+        and certificate valid > 10 days
+        protocol https
+    for 3 cycles
+    then alert
 
 check host www.example.com address www.example.com
-	if failed
-		port 443
-		and certificate valid > 10 days
-		proto https
-		request "/status.php"
-		status = 200
-	for 3 cycles
-	then alert
+    if failed
+        port 443
+        and certificate valid > 10 days
+        proto https
+        request "/status.php"
+        status = 200
+    for 3 cycles
+    then alert
 
 check host irc.example.com address irc.example.com
-	every 6 cycles
-	if failed
-		port 6667
-		expect ".* NOTICE AUTH .*Found your hostname"
-		send "NICK monit_test1\r\n"
-		send "USER monit_test1 8 * : Monit\r\n"
-		expect ".* 001 monit_test1 .*"
-		send "PING :irc.example.com\r\n"
-		expect ".* PONG .*"
-		send "QUIT\r\n"
-		timeout 30 seconds
-	for 2 cycles
-	then alert
-	alert irc-admin@example.com
+    every 6 cycles
+    if failed
+        port 6667
+        expect ".* NOTICE AUTH .*Found your hostname"
+        send "NICK monit_test1\r\n"
+        send "USER monit_test1 8 * : Monit\r\n"
+        expect ".* 001 monit_test1 .*"
+        send "PING :irc.example.com\r\n"
+        expect ".* PONG .*"
+        send "QUIT\r\n"
+        timeout 30 seconds
+    for 2 cycles
+    then alert
+    alert irc-admin@example.com
