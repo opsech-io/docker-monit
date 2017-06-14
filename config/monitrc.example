@@ -17,12 +17,16 @@ set mailserver
 set alert admin@example.com but not on { instance }
 set alert your-10d-number@sms-gateway.com but not on { instance }
 
-check host node.example.com address node.example.com
+check host GoogleDNS address google-public-dns-a.google.com
     if failed ping4 then alert
 
-check host mail.example.com address mail.example.com
+check host Gmail-SMTP address smtp.gmail.com
     if failed port 25 protocol smtp then alert
-    if failed port 143 protocol imap then alert
+
+check host Gmail-IMAPS address imap.gmail.com
+    if failed port 993 protocol imaps then alert
+
+check host Gmail-WWW address gmail.com
     if failed
         port 443
         and certificate valid > 10 days
@@ -40,8 +44,8 @@ check host www.example.com address www.example.com
     for 3 cycles
     then alert
 
-check host irc.example.com address irc.example.com
-    every 6 cycles
+check host Freenode-IRC address irc.freenode.org
+    every 24 cycles
     if failed
         port 6667
         expect ".* NOTICE AUTH .*Found your hostname"
