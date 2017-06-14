@@ -12,7 +12,7 @@ fi
 
 [[ ! -f "${HTPASSWD_FILE}" ]] && > "${HTPASSWD_FILE}"
 
-docker-compose run --rm -v "$PWD/config/htpasswd:/tmp/config/htpasswd:z,rw" monit \
+docker-compose -f docker-compose.htpasswd.yml run --rm monit-htpasswd \
     htpasswd -m /tmp/config/htpasswd "$USER"
 
 # Restart the monit service only if it's running
